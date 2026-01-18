@@ -114,8 +114,8 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
 
     start_time = time.time()
 
-    # Créer le répertoire centralisé de conversions
-    conversions_root = os.path.join(root_directory, "Conversions Ableton Live")
+    # Create centralized conversions directory
+    conversions_root = os.path.join(root_directory, "xm2live_converted_tracks")
     os.makedirs(conversions_root, exist_ok=True)
 
     # Convertir chaque fichier
@@ -143,10 +143,10 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
         file_basename = os.path.splitext(file_name)[0]
 
         if relative_subdir:
-            # Fichier dans un sous-répertoire : /Conversions Ableton Live/sous-rep/fichier_Ableton_Project
+            # File in subdirectory: /xm2live_converted_tracks/subdir/file_Ableton_Project
             project_dir = os.path.join(conversions_root, relative_subdir, f"{file_basename}_Ableton_Project")
         else:
-            # Fichier à la racine : /Conversions Ableton Live/fichier_Ableton_Project
+            # File at root: /xm2live_converted_tracks/file_Ableton_Project
             project_dir = os.path.join(conversions_root, f"{file_basename}_Ableton_Project")
 
         als_file = os.path.join(project_dir, f"{file_basename}.als")
@@ -227,7 +227,7 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
 
     if success_count > 0:
         print(f"✅ {success_count} file(s) converted successfully!")
-        print(f"\n💡 Projects are in 'Conversions Ableton Live' subdirectories")
+        print(f"\n💡 Projects are in 'xm2live_converted_tracks' subdirectory")
 
     return error_count == 0
 

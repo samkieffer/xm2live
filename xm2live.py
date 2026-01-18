@@ -1788,9 +1788,9 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
     # Préparer les répertoires
     if not output_dir:
         xm_basename = os.path.splitext(os.path.basename(xm_path))[0]
-        # Créer dans le sous-répertoire "Conversions Ableton Live"
+        # Create in "xm2live_converted_tracks" subdirectory
         base_dir = os.path.dirname(xm_path)
-        conversions_dir = os.path.join(base_dir, "Conversions Ableton Live")
+        conversions_dir = os.path.join(base_dir, "xm2live_converted_tracks")
         os.makedirs(conversions_dir, exist_ok=True)
         output_dir = os.path.join(conversions_dir, f"{xm_basename}_Ableton_Project")
 
@@ -2468,7 +2468,7 @@ OUTPUT
 ════════════════════════════════════════════════════════════
 
 The converted project will be created in:
-  [source directory]/Conversions Ableton Live/[name]_Ableton_Project/
+  [source directory]/xm2live_converted_tracks/[name]_Ableton_Project/
 
 Contents:
   • [name].als         - Ableton Live project

@@ -70,7 +70,7 @@ xm2live-batch /path/to/modules --no-recursive
 
 Converted projects are created in:
 ```
-[source directory]/Conversions Ableton Live/[name]_Ableton_Project/
+[source directory]/xm2live_converted_tracks/[name]_Ableton_Project/
 ├── [name].als          # Ableton Live project
 └── Samples/            # Extracted WAV samples (16-bit)
 ```
