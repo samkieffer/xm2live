@@ -1,0 +1,14 @@
+# XM2Live - Convertisseur Tracker vers Ableton Live
+# Dépendances Python requises
+
+# Manipulation des fichiers Ableton Live (.als)
+buildable>=0.2.0
+
+# Traitement numérique pour les samples audio
+numpy>=1.20.0
+
+# Parser XML pour les fichiers .als
+lxml>=4.6.0
+
+# Note: Python 3.7+ est requis
+# Installation: pip install -r requirements.txt
