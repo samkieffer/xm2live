@@ -32,7 +32,7 @@ pip install xm2live
 Or install from source:
 
 ```bash
-git clone https://github.com/KiddingKurrys/xm2live.git
+git clone https://github.com/samkieffer/xm2live.git
 cd xm2live
 pip install -e .
 ```
