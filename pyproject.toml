@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xm2live"
+version = "3.0.0"
+description = "Convert FastTracker 2 XM and Amiga ProTracker MOD files to Ableton Live projects"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Sam Kieffer"}
+]
+keywords = [
+    "tracker", "fasttracker", "protracker", "xm", "mod",
+    "ableton", "live", "converter", "music", "demoscene"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Conversion",
+    "Topic :: Multimedia :: Sound/Audio :: MIDI",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "buildable>=0.1.0",
+    "numpy>=1.20.0",
+    "lxml>=4.6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/samkieffer/xm2live"
+Repository = "https://github.com/samkieffer/xm2live"
+Issues = "https://github.com/samkieffer/xm2live/issues"
+
+[project.scripts]
+xm2live = "xm2live:main"
+xm2live-batch = "batch_convert:main"
+
+[tool.setuptools]
+py-modules = ["xm2live", "xm_parser", "mod_parser", "batch_convert", "minimal_template"]

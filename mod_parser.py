@@ -357,10 +357,10 @@ def extract_samples_and_patterns(mod_path, samples_dir):
                         if param > 0:
                             if param <= 0x1F:  # 0x01-0x1F = Set Speed
                                 default_speed = param
-                                print(f"   → Speed trouvé dans pattern {pattern_idx}: {param}")
+                                print(f"   → Speed found in pattern {pattern_idx}: {param}")
                             else:  # 0x20-0xFF = Set Tempo (BPM)
                                 default_bpm = param
-                                print(f"   → BPM trouvé dans pattern {pattern_idx}: {param}")
+                                print(f"   → BPM found in pattern {pattern_idx}: {param}")
                             break  # Prendre le premier effet F trouvé
                 if default_speed != 6 or default_bpm != 125:
                     break  # Arrêter si on a trouvé des valeurs

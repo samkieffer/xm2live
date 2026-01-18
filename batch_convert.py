@@ -25,11 +25,11 @@ def find_tracker_files(directory, recursive=True):
     directory = Path(directory)
 
     if not directory.exists():
-        print(f"❌ Erreur: Le répertoire '{directory}' n'existe pas")
+        print(f"❌ Erreur: Directory '{directory}' does not exist")
         return files
 
     if not directory.is_dir():
-        print(f"❌ Erreur: '{directory}' n'est pas un répertoire")
+        print(f"❌ Erreur: '{directory}' is not a directory")
         return files
 
     # Patterns de recherche
@@ -37,7 +37,7 @@ def find_tracker_files(directory, recursive=True):
 
     print(f"🔍 Recherche de fichiers dans: {directory}")
     if recursive:
-        print(f"   (recherche récursive activée)")
+        print(f"   (recursive search enabled)")
 
     for pattern in patterns:
         if recursive:
@@ -83,15 +83,15 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
         elif os.path.exists(current_dir_template):
             template_path = current_dir_template
         else:
-            print("❌ ERREUR: Template non trouvé!")
-            print(f"   Cherché dans:")
+            print("❌ ERROR: Template not found!")
+            print(f"   Searched in:")
             print(f"   - {template_next_to_script}")
             print(f"   - {current_dir_template}")
-            print(f"\n💡 Spécifiez le chemin du template avec --template")
+            print(f"\n💡 Specify template path with --template")
             return False
 
     if not os.path.exists(template_path):
-        print(f"❌ ERREUR: Template '{template_path}' n'existe pas!")
+        print(f"❌ ERREUR: Template '{template_path}' does not exist!")
         return False
 
     print(f"\n📋 Template: {os.path.basename(template_path)}\n")
@@ -100,10 +100,10 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
     files = find_tracker_files(directory, recursive)
 
     if not files:
-        print(f"\n⚠️  Aucun fichier .xm ou .mod trouvé dans '{directory}'")
+        print(f"\n⚠️  No .xm or .mod files found in '{directory}'")
         return False
 
-    print(f"\n✓ {len(files)} fichier(s) trouvé(s)\n")
+    print(f"\n✓ {len(files)} file(s) found\n")
 
     # Statistiques
     success_count = 0
@@ -152,7 +152,7 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
         als_file = os.path.join(project_dir, f"{file_basename}.als")
 
         if os.path.exists(als_file):
-            print(f"⏭️  Fichier déjà converti (utilisez --force pour reconvertir)")
+            print(f"⏭️  File already converted (use --force to reconvert)")
             skipped_count += 1
             skipped_files.append((file_path, als_file))
             continue
@@ -166,18 +166,18 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
 
             if success:
                 success_count += 1
-                print(f"\n✅ [{i}/{len(files)}] Conversion réussie!")
+                print(f"\n✅ [{i}/{len(files)}] Conversion successful!")
             else:
                 error_count += 1
                 errors.append((file_name, "Conversion échouée"))
-                print(f"\n❌ [{i}/{len(files)}] Échec de la conversion")
+                print(f"\n❌ [{i}/{len(files)}] Conversion failed")
 
         except KeyboardInterrupt:
             print(f"\n\n⚠️  Interruption par l'utilisateur (Ctrl+C)")
             print(f"\n📊 Conversions interrompues:")
-            print(f"   ✅ Réussies: {success_count}")
-            print(f"   ❌ Échecs: {error_count}")
-            print(f"   ⏭️  Ignorées: {skipped_count}")
+            print(f"   ✅ Successful: {success_count}")
+            print(f"   ❌ Failed: {error_count}")
+            print(f"   ⏭️  Skipped: {skipped_count}")
             print(f"   ⏸️  Restantes: {len(files) - i}")
             return False
 
@@ -195,20 +195,20 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
 
     # Résumé final
     print(f"\n\n{'='*70}")
-    print("📊 RÉSUMÉ DE LA CONVERSION BATCH")
+    print("📊 BATCH CONVERSION SUMMARY")
     print(f"{'='*70}")
-    print(f"Fichiers traités: {len(files)}")
-    print(f"  ✅ Conversions réussies: {success_count}")
+    print(f"Files processed: {len(files)}")
+    print(f"  ✅ Successful conversions: {success_count}")
     if skipped_count > 0:
-        print(f"  ⏭️  Fichiers ignorés (déjà convertis): {skipped_count}")
+        print(f"  ⏭️  Files skipped (already converted): {skipped_count}")
     if error_count > 0:
-        print(f"  ❌ Échecs: {error_count}")
+        print(f"  ❌ Failed: {error_count}")
     print(f"\nTemps total: {minutes}m {seconds}s")
 
     # Afficher les erreurs détaillées
     if errors:
         print(f"\n{'='*70}")
-        print("❌ DÉTAILS DES ERREURS")
+        print("❌ ERROR DETAILS")
         print(f"{'='*70}")
         for file_name, error_msg in errors:
             print(f"\n• {file_name}")
@@ -217,7 +217,7 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
     # Afficher les fichiers ignorés (déjà convertis)
     if skipped_files:
         print(f"\n{'='*70}")
-        print("⏭️  FICHIERS IGNORÉS (déjà convertis)")
+        print("⏭️  SKIPPED FILES (already converted)")
         print(f"{'='*70}")
         for source_path, als_path in skipped_files:
             print(f"\n• {source_path}")
@@ -226,8 +226,8 @@ def batch_convert(directory, template_path=None, recursive=True, enable_pan_auto
     print(f"\n{'='*70}")
 
     if success_count > 0:
-        print(f"✅ {success_count} fichier(s) converti(s) avec succès!")
-        print(f"\n💡 Les projets sont dans les sous-répertoires 'Conversions Ableton Live'")
+        print(f"✅ {success_count} file(s) converted successfully!")
+        print(f"\n💡 Projects are in 'Conversions Ableton Live' subdirectories")
 
     return error_count == 0
 
@@ -236,63 +236,63 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='Convertit tous les fichiers .xm et .mod d\'un répertoire en projets Ableton Live',
+        description='Convert all .xm and .mod files from a directory to Ableton Live projects',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-Exemples:
-  # Convertir tous les fichiers du répertoire actuel
-  python3 batch_convert.py .
+Examples:
+  # Convert all files from current directory
+  xm2live-batch .
 
-  # Convertir tous les fichiers d'un répertoire spécifique
-  python3 batch_convert.py "/path/to/modules"
+  # Convert all files from a specific directory
+  xm2live-batch "/path/to/modules"
 
-  # Convertir sans recherche récursive (uniquement le répertoire principal)
-  python3 batch_convert.py "/path/to/modules" --no-recursive
+  # Convert without recursive search (current directory only)
+  xm2live-batch "/path/to/modules" --no-recursive
 
-  # Spécifier un template personnalisé
-  python3 batch_convert.py "/path/to/modules" --template "/path/to/template.als"
+  # Specify a custom template
+  xm2live-batch "/path/to/modules" --template "/path/to/template.als"
         """
     )
 
     parser.add_argument(
         'directory',
-        help='Répertoire contenant les fichiers .xm et .mod à convertir'
+        help='Directory containing .xm and .mod files to convert'
     )
 
     parser.add_argument(
         '--template', '-t',
-        help='Chemin vers le template Ableton Live (.als)',
+        help='Path to Ableton Live template (.als)',
         default=None
     )
 
     parser.add_argument(
         '--no-recursive', '-n',
         action='store_true',
-        help='Ne pas rechercher dans les sous-répertoires'
+        help='Do not search in subdirectories'
     )
 
     parser.add_argument(
         '--force', '-f',
         action='store_true',
-        help='Reconvertir même si le fichier existe déjà (non implémenté)'
+        help='Reconvert even if file already exists (not implemented)'
     )
 
     parser.add_argument(
         '--pan-automation',
         action='store_true',
-        help='Activer les automations de panning (effet 8xx). Par défaut désactivé car rare.'
+        help='Enable panning automations (effect 8xx). Disabled by default.'
     )
 
     parser.add_argument(
         '--envelope',
         action='store_true',
-        help='Activer la conversion des enveloppes volume FT2 → ADSR. Par défaut désactivé car approximation.'
+        help='Enable FT2 volume envelope → ADSR conversion. Disabled by default.'
     )
 
     parser.add_argument(
         '--sample-offset',
         action='store_true',
-        help='Activer l\'effet 9xx (Sample Offset) avec Simpler. LIMITATION: ping-pong → forward.'
+        help='Enable effect 9xx (Sample Offset) with Simpler. LIMITATION: ping-pong → forward.'
     )
 
     args = parser.parse_args()

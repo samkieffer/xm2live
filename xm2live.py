@@ -97,7 +97,7 @@ def update_sampler_sample(track, sample_info, project_dir, template_sample_part,
     # Trouver le device Sampler/MultiSampler
     devices = track.element.find('.//DeviceChain/Devices')
     if devices is None:
-        print(f"    ⚠️  Pas de DeviceChain/Devices trouvé")
+        print(f"    ⚠️  No DeviceChain/Devices found")
         return False
 
     # Chercher MultiSampler comme enfant direct de Devices (pas descendant)
@@ -106,7 +106,7 @@ def update_sampler_sample(track, sample_info, project_dir, template_sample_part,
         sampler = devices.find('./OriginalSimpler')
 
     if sampler is None:
-        print(f"    ⚠️  Pas de Sampler trouvé")
+        print(f"    ⚠️  No Sampler found")
         return False
 
     # Trouver ou créer la structure Player/MultiSampleMap/SampleParts
@@ -182,7 +182,7 @@ def update_sampler_sample(track, sample_info, project_dir, template_sample_part,
         root_key = 60 - relative_note
         root_key_elem.set('Value', str(root_key))
         if relative_note != 0:
-            print(f"    → RootKey ajustée: {root_key} (relative_note={relative_note:+d})")
+            print(f"    → RootKey adjusted: {root_key} (relative_note={relative_note:+d})")
 
     # Mettre à jour Detune (finetune) juste après RootKey
     # XM finetune: -128 à +127 (centièmes de demi-ton)
@@ -241,9 +241,9 @@ def update_sampler_sample(track, sample_info, project_dir, template_sample_part,
         # Afficher seulement si différent du centre
         if xm_panning != 128:
             if ableton_pan < 0:
-                print(f"    → Panorama: {ableton_pan:.2f} (gauche, XM={xm_panning}/255)")
+                print(f"    → Panorama: {ableton_pan:.2f} (left, XM={xm_panning}/255)")
             else:
-                print(f"    → Panorama: {ableton_pan:.2f} (droite, XM={xm_panning}/255)")
+                print(f"    → Panorama: {ableton_pan:.2f} (right, XM={xm_panning}/255)")
 
     # Lire la longueur du sample WAV pour mettre à jour SampleEnd
     if os.path.exists(sample_path):
@@ -306,7 +306,7 @@ def update_sampler_sample(track, sample_info, project_dir, template_sample_part,
     num_voices = sampler.find('.//NumVoices')
     if num_voices is not None:
         num_voices.set('Value', '0')  # 0 = 1 voix
-        print(f"    → Voix: 1 (monophonique)")
+        print(f"    → Voice: 1 (monophonic)")
 
     # Configurer l'enveloppe ADSR si activé
     if enable_envelope:
@@ -433,7 +433,7 @@ def get_simpler_template(next_id):
             break
 
     if template_path is None:
-        print("❌ Template Simpler non trouvé (simpler_template.xml)")
+        print("❌ Simpler template not found (simpler_template.xml)")
         return None, next_id
 
     try:
@@ -484,7 +484,7 @@ def populate_track_with_simpler(track, sample_info, project_dir, next_id, bpm=12
     # Trouver le DeviceChain/Devices
     devices = track.element.find('.//DeviceChain/Devices')
     if devices is None:
-        print(f"    ⚠️  Pas de DeviceChain/Devices trouvé")
+        print(f"    ⚠️  No DeviceChain/Devices found")
         return (next_id, None)
 
     # Supprimer le MultiSampler existant s'il y en a un
@@ -505,7 +505,7 @@ def populate_track_with_simpler(track, sample_info, project_dir, next_id, bpm=12
     # (oui, Simpler a la même structure que Sampler pour les samples)
     sample_part = simpler.find('.//Player/MultiSampleMap/SampleParts/MultiSamplePart')
     if sample_part is None:
-        print(f"    ⚠️  Pas de MultiSamplePart trouvé dans le template Simpler")
+        print(f"    ⚠️  No MultiSamplePart found in Simpler template")
         return (next_id, None)
 
     # Mettre à jour les chemins du sample
@@ -556,7 +556,7 @@ def populate_track_with_simpler(track, sample_info, project_dir, next_id, bpm=12
         root_key = 60 - relative_note
         root_key_elem.set('Value', str(root_key))
         if relative_note != 0:
-            print(f"    → RootKey ajustée: {root_key} (relative_note={relative_note:+d})")
+            print(f"    → RootKey adjusted: {root_key} (relative_note={relative_note:+d})")
 
     # Mettre à jour Detune (finetune)
     finetune = sample_info.get('finetune', 0)
@@ -578,9 +578,9 @@ def populate_track_with_simpler(track, sample_info, project_dir, next_id, bpm=12
 
         if xm_panning != 128:
             if ableton_pan < 0:
-                print(f"    → Panorama: {ableton_pan:.2f} (gauche, XM={xm_panning}/255)")
+                print(f"    → Panorama: {ableton_pan:.2f} (left, XM={xm_panning}/255)")
             else:
-                print(f"    → Panorama: {ableton_pan:.2f} (droite, XM={xm_panning}/255)")
+                print(f"    → Panorama: {ableton_pan:.2f} (right, XM={xm_panning}/255)")
 
     # Mettre à jour Volume du sample dans MultiSamplePart
     # (pas le Volume global du Simpler, qui est à -12dB dans le template)
@@ -676,7 +676,7 @@ def populate_track_with_simpler(track, sample_info, project_dir, next_id, bpm=12
     num_voices = simpler.find('.//NumVoices')
     if num_voices is not None:
         num_voices.set('Value', '0')  # 0 = 1 voix
-        print(f"    → Voix: 1 (monophonique)")
+        print(f"    → Voice: 1 (monophonic)")
 
     # Configurer l'enveloppe ADSR si activé
     if enable_envelope:
@@ -686,7 +686,7 @@ def populate_track_with_simpler(track, sample_info, project_dir, next_id, bpm=12
             # Car il cherche VolumeAndPan/Envelope qui existe dans les deux devices
             configure_envelope_adsr(simpler, envelope_info, bpm, speed)
 
-    print(f"    ✅ Simpler configuré (effet 9xx supporté)")
+    print(f"    ✅ Simpler configured (effect 9xx supported)")
 
     # Récupérer l'ID de l'AutomationTarget SampleStart pour les automations 9xx
     # On le fait ICI pendant qu'on manipule le Simpler, car buildable ne persiste pas les recherches ultérieures
@@ -720,13 +720,13 @@ def update_midi_clip_notes(track, notes):
     # Trouver le MainSequencer
     main_seq = track.element.find('.//DeviceChain/MainSequencer')
     if main_seq is None:
-        print(f"    ⚠️  Pas de MainSequencer trouvé")
+        print(f"    ⚠️  No MainSequencer found")
         return False
 
     # Trouver le premier clip MIDI
     midi_clip = main_seq.find('.//MidiClip')
     if midi_clip is None:
-        print(f"    ⚠️  Pas de MidiClip trouvé")
+        print(f"    ⚠️  No MidiClip found")
         return False
 
     # Calculer la durée totale
@@ -751,7 +751,7 @@ def update_midi_clip_notes(track, notes):
     # Trouver l'élément Notes/KeyTracks
     key_tracks = midi_clip.find('.//Notes/KeyTracks')
     if key_tracks is None:
-        print(f"    ⚠️  Pas de KeyTracks trouvé")
+        print(f"    ⚠️  No KeyTracks found")
         return False
 
     # Supprimer tous les KeyTracks existants
@@ -810,7 +810,7 @@ def add_sample_offset_automations_to_file(als_path, automation_data, next_id):
     if not automation_data:
         return True  # Rien à faire
 
-    print(f"\n✍️  Post-processing: Ajout des automations Sample Start...")
+    print(f"\n✍️  Post-processing: Adding Sample Start automations...")
 
     try:
         # 1. Décompresser le fichier .als
@@ -833,7 +833,7 @@ def add_sample_offset_automations_to_file(als_path, automation_data, next_id):
 
             # Utiliser l'index pour accéder directement à la bonne piste
             if track_index >= len(all_midi_tracks):
-                print(f"   ⚠️  Index {track_index} hors limites (seulement {len(all_midi_tracks)} pistes)")
+                print(f"   ⚠️  Index {track_index} out of bounds (only {len(all_midi_tracks)} tracks)")
                 continue
 
             midi_track = all_midi_tracks[track_index]
@@ -841,13 +841,13 @@ def add_sample_offset_automations_to_file(als_path, automation_data, next_id):
             # Vérifier que la piste contient bien un OriginalSimpler
             simpler = midi_track.find('.//OriginalSimpler')
             if simpler is None:
-                print(f"   ⚠️  Piste #{track_index} '{track_name}' ne contient pas de OriginalSimpler")
+                print(f"   ⚠️  Piste #{track_index} '{track_name}' does not contain OriginalSimpler")
                 continue
 
             # Trouver AutomationEnvelopes
             automation_envelopes = midi_track.find('.//AutomationEnvelopes')
             if automation_envelopes is None:
-                print(f"   ⚠️  AutomationEnvelopes non trouvé pour '{track_name}'")
+                print(f"   ⚠️  AutomationEnvelopes not found for '{track_name}'")
                 continue
 
             # Supprimer l'ancien Envelopes et en créer un nouveau
@@ -932,14 +932,14 @@ def add_sample_offset_automations_to_file(als_path, automation_data, next_id):
             time_transforms = etree.SubElement(transform_state, 'TimeAndValueTransforms')
 
             num_points = len(events.findall('FloatEvent'))
-            print(f"   ✓ '{track_name}': {num_points} points d'automation")
+            print(f"   ✓ '{track_name}': {num_points} automation points")
 
         # 4. Recompresser et sauvegarder
         xml_bytes = etree.tostring(root, xml_declaration=True, encoding='UTF-8')
         with gzip.open(als_path, 'wb') as f:
             f.write(xml_bytes)
 
-        print(f"   ✓ Fichier .als mis à jour avec {len(automation_data)} automations")
+        print(f"   ✓ .als file updated with {len(automation_data)} automations")
         return True
 
     except Exception as e:
@@ -982,7 +982,7 @@ def create_sample_offset_automation(track, notes, sample_length, next_id):
     # LoopModulators est dans OriginalSimpler (pas dans MultiSampler)
     sample_start_target = track.element.find('.//OriginalSimpler/LoopModulators/SampleStart/AutomationTarget')
     if sample_start_target is None:
-        print("    ⚠️  AutomationTarget du SampleStart non trouvé (Simpler uniquement)")
+        print("    ⚠️  SampleStart AutomationTarget not found (Simpler only)")
         return next_id
 
     sample_start_target_id = sample_start_target.get('Id')
@@ -1124,7 +1124,7 @@ def create_pan_automation(track, notes, sample_default_pan, next_id):
     # Trouver le Pan AutomationTarget du Mixer
     mixer_pan_target = track.element.find('.//DeviceChain/Mixer/Pan/AutomationTarget')
     if mixer_pan_target is None:
-        print("    ⚠️  AutomationTarget du Pan non trouvé")
+        print("    ⚠️  Pan AutomationTarget not found")
         return next_id
 
     pan_target_id = mixer_pan_target.get('Id')
@@ -1263,12 +1263,12 @@ def configure_envelope_adsr(sampler, envelope_info, bpm, speed):
     # L'enveloppe de volume est dans VolumeAndPan, pas dans SimplerFilter
     volume_and_pan = sampler.find('.//VolumeAndPan')
     if volume_and_pan is None:
-        print("    ⚠️  VolumeAndPan non trouvé dans le Sampler")
+        print("    ⚠️  VolumeAndPan not found in Sampler")
         return False
 
     envelope = volume_and_pan.find('.//Envelope')
     if envelope is None:
-        print("    ⚠️  Enveloppe Volume non trouvée dans VolumeAndPan")
+        print("    ⚠️  Volume envelope not found in VolumeAndPan")
         return False
 
     # Trouver le pic (valeur max)
@@ -1457,7 +1457,7 @@ def generate_als_with_n_tracks(num_tracks):
     """Génère un fichier .als temporaire avec N pistes à partir du template minimal embarqué
 
     Args:
-        num_tracks: Nombre de pistes MIDI nécessaires
+        num_tracks: Nombre de MIDI tracks nécessaires
 
     Returns:
         Chemin du fichier .als créé, ou None en cas d'erreur
@@ -1467,7 +1467,7 @@ def generate_als_with_n_tracks(num_tracks):
     from lxml import etree
     from copy import deepcopy
 
-    print(f"🏗️  Génération d'un template avec {num_tracks} pistes (template embarqué)...")
+    print(f"🏗️  Generating template with {num_tracks} tracks (embedded template)...")
 
     # Créer un fichier temporaire
     temp_file = tempfile.NamedTemporaryFile(mode='wb', suffix='.als', delete=False)
@@ -1481,7 +1481,7 @@ def generate_als_with_n_tracks(num_tracks):
         # Trouver la MidiTrack unique
         midi_tracks = root.findall('.//MidiTrack')
         if len(midi_tracks) != 1:
-            print(f"❌ Erreur: template minimal doit contenir exactement 1 piste (trouvé: {len(midi_tracks)})")
+            print(f"❌ Error: minimal template must contain exactly 1 track (found: {len(midi_tracks)})")
             os.unlink(output_path)
             return None
 
@@ -1489,7 +1489,7 @@ def generate_als_with_n_tracks(num_tracks):
 
         if num_tracks == 1:
             # Pas besoin de dupliquer
-            print(f"   ✓ 1 piste (pas de duplication nécessaire)")
+            print(f"   ✓ 1 track (no duplication needed)")
             xml_str = etree.tostring(root, encoding='UTF-8', xml_declaration=True)
             with gzip.open(output_path, 'wb', compresslevel=9) as f:
                 f.write(xml_str)
@@ -1498,7 +1498,7 @@ def generate_als_with_n_tracks(num_tracks):
         # Trouver le parent des MidiTrack (Tracks)
         tracks_parent = root.find('.//Tracks')
         if tracks_parent is None:
-            print("❌ Impossible de trouver l'élément <Tracks>!")
+            print("❌ Cannot find <Tracks> element!")
             os.unlink(output_path)
             return None
 
@@ -1522,7 +1522,7 @@ def generate_als_with_n_tracks(num_tracks):
 
         # Dupliquer la piste (num_tracks - 1) fois
         tracks_to_add = num_tracks - 1
-        print(f"   Duplication de la piste template {tracks_to_add} fois...")
+        print(f"   Duplicating template track {tracks_to_add} times...")
 
         for i in range(tracks_to_add):
             # Créer une copie profonde de la piste template
@@ -1553,7 +1553,7 @@ def generate_als_with_n_tracks(num_tracks):
 
             # Progression
             if (i + 1) % 50 == 0 or (i + 1) == tracks_to_add:
-                print(f"   {i + 1}/{tracks_to_add} pistes ajoutées...")
+                print(f"   {i + 1}/{tracks_to_add} tracks added...")
 
         # Mettre à jour NextPointeeId
         next_pointee_elem = root.find('.//NextPointeeId')
@@ -1562,32 +1562,32 @@ def generate_als_with_n_tracks(num_tracks):
 
         # Vérifier le nombre total de pistes
         total_tracks = len(root.findall('.//MidiTrack'))
-        print(f"   ✓ {total_tracks} pistes créées")
+        print(f"   ✓ {total_tracks} tracks created")
 
         if total_tracks != num_tracks:
             print(f"   ⚠️  ATTENTION: {total_tracks} pistes au lieu de {num_tracks}!")
 
         # Sauvegarder le fichier .als
-        print(f"   Compression et sauvegarde...")
+        print(f"   Compressing and saving...")
         xml_str = etree.tostring(root, encoding='UTF-8', xml_declaration=True)
 
         with gzip.open(output_path, 'wb', compresslevel=9) as f:
             f.write(xml_str)
 
         size_kb = os.path.getsize(output_path) / 1024
-        print(f"   ✓ Fichier créé: {size_kb:.1f} KB")
+        print(f"   ✓ File created: {size_kb:.1f} KB")
 
         return output_path
 
     except Exception as e:
-        print(f"❌ Erreur lors de la génération: {e}")
+        print(f"❌ Error during generation: {e}")
         if os.path.exists(output_path):
             os.unlink(output_path)
         return None
 
 
 def create_template_with_n_tracks(base_template_path, output_path, num_tracks):
-    """Crée un template Ableton avec N pistes MIDI à partir d'un template de base
+    """Crée un template Ableton avec N MIDI tracks à partir d'un template de base
 
     Args:
         base_template_path: Chemin du template de base (ex: template_100_tracks.als)
@@ -1601,7 +1601,7 @@ def create_template_with_n_tracks(base_template_path, output_path, num_tracks):
     from lxml import etree
     from copy import deepcopy
 
-    print(f"📦 Création d'un template avec {num_tracks} pistes...")
+    print(f"📦 Creating template with {num_tracks} tracks...")
 
     # Charger le template de base
     with gzip.open(base_template_path, 'rb') as f:
@@ -1614,19 +1614,19 @@ def create_template_with_n_tracks(base_template_path, output_path, num_tracks):
 
     if base_num_tracks >= num_tracks:
         # Pas besoin de dupliquer, copier simplement le template
-        print(f"   Template de base a déjà {base_num_tracks} pistes (>= {num_tracks})")
+        print(f"   Base template already has {base_num_tracks} tracks (>= {num_tracks})")
         with gzip.open(output_path, 'wb', compresslevel=9) as f:
             f.write(etree.tostring(root, encoding='UTF-8', xml_declaration=True))
         return True
 
     tracks_to_add = num_tracks - base_num_tracks
     print(f"   Template de base: {base_num_tracks} pistes")
-    print(f"   Pistes à ajouter: {tracks_to_add}")
+    print(f"   Tracks to add: {tracks_to_add}")
 
     # Trouver le parent des MidiTrack (Tracks)
     tracks_parent = root.find('.//Tracks')
     if tracks_parent is None:
-        print("❌ Impossible de trouver l'élément <Tracks>!")
+        print("❌ Cannot find <Tracks> element!")
         return False
 
     # Trouver l'index de la première ReturnTrack (on va insérer AVANT)
@@ -1644,7 +1644,7 @@ def create_template_with_n_tracks(base_template_path, output_path, num_tracks):
 
     next_id = max(existing_ids) + 1 if existing_ids else 100000
 
-    # Dupliquer les pistes nécessaires (on duplique cycliquement si besoin)
+    # Dupliquer les tracks needed (on duplique cycliquement si besoin)
     for i in range(tracks_to_add):
         # Dupliquer la piste i % base_num_tracks
         source_track = midi_tracks[i % base_num_tracks]
@@ -1667,7 +1667,7 @@ def create_template_with_n_tracks(base_template_path, output_path, num_tracks):
 
         # Afficher la progression
         if (i + 1) % 50 == 0 or (i + 1) == tracks_to_add:
-            print(f"   {i + 1}/{tracks_to_add} pistes ajoutées...")
+            print(f"   {i + 1}/{tracks_to_add} tracks added...")
 
     # Mettre à jour NextPointeeId
     next_pointee_elem = root.find('.//NextPointeeId')
@@ -1683,16 +1683,16 @@ def create_template_with_n_tracks(base_template_path, output_path, num_tracks):
 
     # Vérifier le résultat
     total_tracks = len(root.findall('.//MidiTrack'))
-    print(f"   ✓ Template créé: {total_tracks} pistes MIDI")
+    print(f"   ✓ Template created: {total_tracks} MIDI tracks")
 
     return True
 
 
 def get_or_create_template(num_tracks_needed):
-    """Trouve ou crée automatiquement un template avec le nombre de pistes nécessaires
+    """Trouve ou crée automatiquement un template avec le nombre de tracks needed
 
     Args:
-        num_tracks_needed: Nombre de pistes MIDI requises
+        num_tracks_needed: Nombre de MIDI tracks requises
 
     Returns:
         Chemin du template (str) ou None si erreur
@@ -1720,11 +1720,11 @@ def get_or_create_template(num_tracks_needed):
     # Chercher un template qui existe et qui a assez de pistes
     for num, path in search_candidates:
         if os.path.exists(path) and num >= num_tracks_needed:
-            print(f"📋 Utilisation du template: {os.path.basename(path)} ({num} pistes)")
+            print(f"📋 Utilisation du template: {os.path.basename(path)} ({num} tracks)")
             return path
 
-    # Aucun template trouvé avec assez de pistes, créer automatiquement
-    print(f"\n📦 Aucun template trouvé avec {num_tracks_needed} pistes")
+    # No template found with assez de pistes, créer automatiquement
+    print(f"\n📦 No template found with {num_tracks_needed} pistes")
 
     # Trouver un template de base pour duplication
     base_template = None
@@ -1734,19 +1734,19 @@ def get_or_create_template(num_tracks_needed):
             break
 
     if base_template is None:
-        print("❌ ERREUR: Aucun template de base trouvé (template_100_tracks.als)")
-        print("   Veuillez créer un template de base avec au moins 100 pistes MIDI.")
+        print("❌ ERREUR: No base template found (template_100_tracks.als)")
+        print("   Please create a base template with at least 100 MIDI tracks.")
         return None
 
     # Créer le nouveau template
     output_path = f"./template_{rounded_tracks}_tracks.als"
     print(f"   Base: {os.path.basename(base_template)}")
-    print(f"   Cible: {os.path.basename(output_path)} ({rounded_tracks} pistes)")
+    print(f"   Cible: {os.path.basename(output_path)} ({rounded_tracks} tracks)")
 
     if not create_template_with_n_tracks(base_template, output_path, rounded_tracks):
         return None
 
-    print(f"   ✓ Template créé automatiquement!")
+    print(f"   ✓ Template created automatically!")
     return output_path
 
 
@@ -1781,9 +1781,9 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
 
     # Avertissement si enveloppes activées
     if enable_envelope:
-        print("\n⚠️  MODE EXPÉRIMENTAL: Conversion des enveloppes activée")
-        print("   Les enveloppes FT2 multi-points sont approximées en ADSR Ableton.")
-        print("   Résultat approximatif, ajustements manuels recommandés.\n")
+        print("\n⚠️  EXPERIMENTAL MODE: Envelope conversion enabled")
+        print("   FT2 multi-point envelopes are approximated to Ableton ADSR.")
+        print("   Approximate result, manual adjustments recommended.\n")
 
     # Préparer les répertoires
     if not output_dir:
@@ -1818,7 +1818,7 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
             from envelope_reader import read_xm_envelopes
         except ImportError:
             print("⚠️  AVERTISSEMENT: Le module envelope_reader n'est pas disponible.")
-            print("   La conversion des enveloppes est désactivée.")
+            print("   Envelope conversion is disabled.")
             enable_envelope = False
         else:
             print(f"\n🎛️  Lecture des enveloppes volume...")
@@ -1837,14 +1837,14 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
                         'sustain_point': 0,
                         'points': []
                     }
-            print(f"    → {len(envelopes)} enveloppes chargées")
+            print(f"    → {len(envelopes)} envelopes loaded")
 
     print(f"\n{'='*60}")
     print(f"MODULE: {xm_info['name']}")
     print(f"Speed: {xm_info['tempo']} ticks/row")
     print(f"BPM: {xm_info['bpm']}")
     real_bpm = xm_info['bpm'] * (6.0 / xm_info['tempo'])
-    print(f"BPM réel: {real_bpm:.2f}")
+    print(f"Real BPM: {real_bpm:.2f}")
     print(f"Canaux: {xm_info['channels']}")
     print(f"Samples: {len(samples)}")
     print(f"Patterns: {len(patterns)}")
@@ -1861,10 +1861,10 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
         )
         if instruments_with_9xx:
             inst_hex_list = [f"{i:02X}" for i in sorted(instruments_with_9xx)]
-            print(f"\n🎚️  Effet 9xx détecté sur {len(instruments_with_9xx)} instrument(s): {', '.join(inst_hex_list)}")
-            print(f"   → Ces instruments utiliseront Simpler (Sample Start automatable)")
+            print(f"\n🎚️  Effect 9xx detected on {len(instruments_with_9xx)} instrument(s): {', '.join(inst_hex_list)}")
+            print(f"   → These instruments will use Simpler (Sample Start automatable)")
         else:
-            print(f"\n🎚️  Aucun effet 9xx détecté")
+            print(f"\n🎚️  No effect 9xx detected")
 
     # Organiser les pistes par canal
     tracks_data = organize_func(
@@ -1883,7 +1883,7 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
         for channel in tracks_data.keys()
     )
 
-    print(f"\n🎹 {num_tracks_needed} pistes nécessaires")
+    print(f"\n🎹 {num_tracks_needed} tracks needed")
 
     # Obtenir ou générer le template avec le bon nombre de pistes
     if template_path is None:
@@ -1899,24 +1899,24 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
         print(f"📋 Utilisation du template: {os.path.basename(template_path)}")
 
     # Charger le template
-    print(f"\n📝 Chargement du template...")
+    print(f"\n📝 Loading template...")
     live_set = LiveSet.from_file(template_path)
-    print(f"   Template chargé: {len(live_set.primary_tracks)} pistes")
+    print(f"   Template loaded: {len(live_set.primary_tracks)} tracks")
 
     # Extraire le MultiSamplePart de la première piste pour l'utiliser comme template
     first_track = live_set.primary_tracks[0]
     template_sample_part = first_track.element.find('.//MultiSampler/Player/MultiSampleMap/SampleParts/MultiSamplePart')
 
     if template_sample_part is None:
-        print(f"\n❌ ERREUR: La première piste doit contenir un MultiSampler avec un sample!")
-        print(f"   Veuillez créer un template avec un sample dans la première piste.")
+        print(f"\n❌ ERREUR: First track must contain a MultiSampler with a sample!")
+        print(f"   Please create a template with a sample in the first track.")
         return False
 
-    print(f"   ✓ Template MultiSamplePart extrait de la première piste")
+    print(f"   ✓ Template MultiSamplePart extracted from first track")
 
     if num_tracks_needed > len(live_set.primary_tracks):
-        print(f"\n⚠️  ATTENTION: {num_tracks_needed} pistes nécessaires mais seulement {len(live_set.primary_tracks)} disponibles!")
-        print(f"   Les pistes supplémentaires seront ignorées.")
+        print(f"\n⚠️  ATTENTION: {num_tracks_needed} tracks needed mais seulement {len(live_set.primary_tracks)} disponibles!")
+        print(f"   Extra tracks will be ignored.")
 
     # Créer un mapping instrument -> couleur
     # Utiliser des couleurs différentes pour chaque instrument (0-69 sont les couleurs d'Ableton)
@@ -1994,10 +1994,10 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
             # Mode normal: créer les pistes individuelles par canal
             tracks_to_create.extend(instrument_tracks)
 
-    # Recalculer le nombre de pistes nécessaires APRÈS avoir ajouté les pistes ALL
+    # Recalculer le nombre de tracks needed APRÈS avoir ajouté les pistes ALL
     actual_tracks_needed = len(tracks_to_create)
     if actual_tracks_needed > num_tracks_needed:
-        print(f"   → {actual_tracks_needed - num_tracks_needed} pistes ALL ajoutées (total: {actual_tracks_needed})")
+        print(f"   → {actual_tracks_needed - num_tracks_needed} ALL tracks added (total: {actual_tracks_needed})")
         num_tracks_needed = actual_tracks_needed
 
         # Régénérer le template si nécessaire
@@ -2070,7 +2070,7 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
                     'notes': track_info['notes'],
                     'sample_length': track_info['sample']['length']  # Longueur en samples
                 })
-                print(f"    → Automation Sample Start préparée ({len(offset_notes)} notes avec effet 9xx)")
+                print(f"    → Sample Start automation prepared ({len(offset_notes)} notes with effect 9xx)")
 
         # Créer l'automation de panning basée sur les effets 8xx (si activé)
         if enable_pan_automation:
@@ -2092,7 +2092,7 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
         track_index += 1
 
     # Créer des groupes pour les instruments avec 2+ pistes AVANT de supprimer les pistes
-    print(f"\n📁 Création des groupes de pistes...")
+    print(f"\n📁 Creating track groups...")
 
     # Identifier les instruments avec plusieurs pistes
     # Ne garder que les tracks qui ont été réellement créées (avec track_element)
@@ -2260,19 +2260,19 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
                 if lower_display is not None:
                     lower_display.set('Value', '')
 
-            print(f"  ✓ Groupe créé: {sample_name} ({len(tracks_for_inst)} pistes)")
+            print(f"  ✓ Group created: {sample_name} ({len(tracks_for_inst)} tracks)")
 
             next_group_id += 1
 
     # Supprimer les pistes non utilisées APRÈS avoir créé les groupes
-    print(f"\n🗑️  Suppression des pistes non utilisées...")
+    print(f"\n🗑️  Removing unused tracks...")
     # Garder seulement les pistes que nous avons utilisées (et les GroupTracks)
     all_tracks_in_container = list(tracks_container)
 
     # Créer un set des éléments de piste utilisés
     used_track_elements = {info['track_element'] for info in tracks_to_create if 'track_element' in info}
 
-    # Supprimer les pistes MIDI inutilisées
+    # Supprimer les MIDI tracks inutilisées
     # On ne supprime que les MidiTrack qui ne sont pas dans used_track_elements
     tracks_to_remove = []
     for track_elem in all_tracks_in_container:
@@ -2282,10 +2282,10 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
     for track in tracks_to_remove:
         tracks_container.remove(track)
 
-    print(f"   {len(tracks_to_remove)} pistes supprimées")
+    print(f"   {len(tracks_to_remove)} tracks removed")
 
     # Replier toutes les pistes utilisées pour une meilleure vue d'ensemble
-    print(f"\n📁 Repliement des pistes et groupes...")
+    print(f"\n📁 Folding tracks and groups...")
     folded_count = 0
     for track_info in tracks_to_create:
         if 'track_element' in track_info:
@@ -2295,7 +2295,7 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
                 track_unfolded.set('Value', 'false')
                 folded_count += 1
 
-    print(f"   {folded_count} pistes repliées")
+    print(f"   {folded_count} tracks folded")
 
     # Calculer le BPM réel selon la formule FastTracker 2
     # BPM réel = BPM × (6 / Speed)
@@ -2304,16 +2304,16 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
     real_bpm = xm_bpm * (6.0 / xm_speed)
 
     # Mettre à jour le tempo partout où il apparaît
-    print(f"\n🎵 Calcul du tempo réel:")
+    print(f"\n🎵 Calculating real tempo:")
     print(f"   XM Speed: {xm_speed} ticks/row")
     print(f"   XM BPM: {xm_bpm}")
-    print(f"   → BPM réel: {real_bpm:.2f} (formule: {xm_bpm} × 6/{xm_speed})")
+    print(f"   → Real BPM: {real_bpm:.2f} (formula: {xm_bpm} × 6/{xm_speed})")
     tempo_updated_count = 0
     floatevent_updated_count = 0
 
     # Le BPM n'est PAS dans <Tempo> mais directement dans <Manual> et <FloatEvent>
     # Chercher tous les éléments Manual avec Value="120" (le défaut du template)
-    print(f"   Recherche des éléments <Manual> avec Value='120'...")
+    print(f"   Searching for <Manual> elements with Value='120'...")
     for manual in live_set.element.iter('Manual'):
         if manual.get('Value') == '120':
             manual.set('Value', str(real_bpm))
@@ -2321,7 +2321,7 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
             print(f"   → Manual: 120 → {real_bpm:.2f} BPM")
 
     # Aussi mettre à jour les FloatEvent si présents
-    print(f"   Recherche des éléments <FloatEvent> avec Value='120'...")
+    print(f"   Searching for <FloatEvent> elements with Value='120'...")
     for floatevent in live_set.element.iter('FloatEvent'):
         if floatevent.get('Value') == '120':
             floatevent.set('Value', str(real_bpm))
@@ -2330,12 +2330,12 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
 
     total_updated = tempo_updated_count + floatevent_updated_count
     if total_updated > 0:
-        print(f"   ✓ Tempo mis à jour ({tempo_updated_count} Manual, {floatevent_updated_count} FloatEvent)")
+        print(f"   ✓ Tempo updated ({tempo_updated_count} Manual, {floatevent_updated_count} FloatEvent)")
     else:
-        print(f"   ⚠️  Aucun élément trouvé avec Value='120' - BPM peut-être déjà différent de 120?")
+        print(f"   ⚠️  No element found with Value='120' - BPM may already be different from 120?")
 
     # Réinitialiser la position de la tête de lecture au début (1.1.1)
-    print(f"\n⏮️  Réinitialisation de la tête de lecture...")
+    print(f"\n⏮️  Resetting playback position...")
 
     # 1. CurrentTime dans Transport (affichage de la tête de lecture)
     transport = live_set.element.find('.//Transport')
@@ -2343,11 +2343,11 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
         current_time = transport.find('.//CurrentTime')
         if current_time is not None:
             current_time.set('Value', '0')
-            print(f"   ✓ Transport/CurrentTime réinitialisé à 0")
+            print(f"   ✓ Transport/CurrentTime reset to 0")
         else:
-            print(f"   ⚠️  Élément CurrentTime non trouvé")
+            print(f"   ⚠️  CurrentTime element not found")
     else:
-        print(f"   ⚠️  Élément Transport non trouvé")
+        print(f"   ⚠️  Transport element not found")
 
     # 2. TimeSelection global (position de démarrage de la lecture)
     # Chercher le TimeSelection au niveau LiveSet (pas dans les clips)
@@ -2362,26 +2362,26 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
                 anchor_time.set('Value', '0')
             if other_time is not None:
                 other_time.set('Value', '0')
-            print(f"   ✓ TimeSelection global réinitialisé à 0")
+            print(f"   ✓ Global TimeSelection reset to 0")
             break
 
-    print(f"   → La lecture démarrera maintenant à 1.1.1")
+    print(f"   → Playback will now start at 1.1.1")
 
     # Mettre à jour NextPointeeId pour refléter les nouveaux IDs créés
-    print(f"\n🔢 Mise à jour du compteur NextPointeeId...")
+    print(f"\n🔢 Updating NextPointeeId counter...")
     next_pointee_elem = live_set.element.find('.//NextPointeeId')
     if next_pointee_elem is not None:
         old_value = next_pointee_elem.get('Value')
         next_pointee_elem.set('Value', str(global_next_id))
         print(f"   ✓ NextPointeeId: {old_value} → {global_next_id}")
     else:
-        print(f"   ⚠️  NextPointeeId non trouvé")
+        print(f"   ⚠️  NextPointeeId not found")
 
     # Sauvegarder (utiliser le nom du fichier, pas le nom interne du module)
     # Cela évite les conflits quand plusieurs fichiers ont le même nom interne
     xm_basename = os.path.splitext(os.path.basename(xm_path))[0]
     als_path = os.path.join(output_dir, f"{xm_basename}.als")
-    print(f"\n💾 Sauvegarde du projet...")
+    print(f"\n💾 Saving project...")
     live_set.write_to_file(als_path)
 
     # Post-processing: Ajouter les automations Sample Start directement dans le fichier .als
@@ -2389,14 +2389,14 @@ def convert_xm_to_ableton(xm_path, template_path=None, output_dir=None, enable_p
         add_sample_offset_automations_to_file(als_path, automation_data_list, global_next_id)
 
     print(f"\n{'='*60}")
-    print(f"✓ CONVERSION TERMINÉE")
+    print(f"✓ CONVERSION COMPLETE")
     print(f"{'='*60}")
-    print(f"\nProjet: {als_path}")
+    print(f"\nProject: {als_path}")
     print(f"Samples: {samples_dir}/")
-    print(f"\n📊 RÉSUMÉ:")
-    print(f"  • {len(pistes_creees)} pistes créées")
-    print(f"  • {len(samples)} samples extraits")
-    print(f"\n💡 Ouvrez le fichier .als dans Ableton Live !")
+    print(f"\n📊 SUMMARY:")
+    print(f"  • {len(pistes_creees)} tracks created")
+    print(f"  • {len(samples)} samples extracted")
+    print(f"\n💡 Open the .als file in Ableton Live!")
 
     return True
 
@@ -2404,104 +2404,104 @@ def main():
     import argparse
     import sys
 
-    # Si aucun argument, afficher l'aide
+    # If no argument, show help
     if len(sys.argv) == 1:
         sys.argv.append('--help')
 
     parser = argparse.ArgumentParser(
         description='''
 ╔════════════════════════════════════════════════════════════╗
-║     XM2LIVE v2.9.0 - Tracker → Ableton Live Converter     ║
+║     XM2LIVE v3.0 - Tracker → Ableton Live Converter        ║
 ╚════════════════════════════════════════════════════════════╝
 
-Convertit les fichiers tracker (FastTracker 2 XM, Amiga MOD) en
-projets Ableton Live avec samples, notes, tempo et effets.
+Converts tracker files (FastTracker 2 XM, Amiga MOD) to
+Ableton Live projects with samples, notes, tempo and effects.
         ''',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 ════════════════════════════════════════════════════════════
-EXEMPLES D'UTILISATION
+USAGE EXAMPLES
 ════════════════════════════════════════════════════════════
 
-Conversion simple (template auto-créé):
-  python3 xm2live.py mon_fichier.xm
-  python3 xm2live.py ma_musique.mod
+Simple conversion (template auto-created):
+  xm2live myfile.xm
+  xm2live mytrack.mod
 
-Avec template personnalisé (optionnel):
-  python3 xm2live.py mon_fichier.xm /path/to/template.als
+With custom template (optional):
+  xm2live myfile.xm /path/to/template.als
 
-Avec options avancées:
-  python3 xm2live.py fichier.xm --pan-automation
-  python3 xm2live.py fichier.xm --sample-offset
-  python3 xm2live.py fichier.xm --pan-automation --sample-offset
+With advanced options:
+  xm2live file.xm --pan-automation
+  xm2live file.xm --sample-offset
+  xm2live file.xm --pan-automation --sample-offset
 
-Note: Le template est maintenant OPTIONNEL. Si non spécifié, un
-      template avec le nombre exact de pistes nécessaires sera
-      créé automatiquement.
+Note: Template is now OPTIONAL. If not specified, a template
+      with the exact number of tracks needed will be created
+      automatically.
 
 ════════════════════════════════════════════════════════════
-SWITCHES DISPONIBLES
+AVAILABLE OPTIONS
 ════════════════════════════════════════════════════════════
 
---pan-automation    Active les automations de panning (effet 8xx)
-                    Crée des automations Track Pan dans Ableton
-                    Par défaut: désactivé
+--pan-automation    Enable panning automations (effect 8xx)
+                    Creates Track Pan automations in Ableton
+                    Default: disabled
 
---sample-offset     Active l'effet 9xx (Sample Offset) via Simpler
-                    Crée des automations Sample Start
+--sample-offset     Enable effect 9xx (Sample Offset) via Simpler
+                    Creates Sample Start automations
                     LIMITATION: ping-pong loops → forward
-                    Par défaut: désactivé
+                    Default: disabled
 
---envelope          Active conversion enveloppes FT2 → ADSR Ableton
-                    Conversion approximative (12 points → 4 ADSR)
-                    EXPÉRIMENTAL - ajustements manuels recommandés
-                    Par défaut: désactivé
+--envelope          Enable FT2 envelope → Ableton ADSR conversion
+                    Approximate conversion (12 points → 4 ADSR)
+                    EXPERIMENTAL - manual adjustments recommended
+                    Default: disabled
 
---merge-tracks      Crée une piste de référence "ALL" par instrument
-                    Contient toutes les notes fusionnées (sans dédoublons)
-                    Piste sans instrument, utile comme référence visuelle
-                    Placée en première position dans chaque groupe
-                    Par défaut: désactivé
-
-════════════════════════════════════════════════════════════
-RÉSULTAT
-════════════════════════════════════════════════════════════
-
-Le projet converti sera créé dans:
-  [répertoire source]/Conversions Ableton Live/[nom]_Ableton_Project/
-
-Contenu:
-  • [nom].als           - Projet Ableton Live
-  • Samples/            - Samples WAV exportés (16-bit)
+--merge-tracks      Merge mode: create one "All notes" track per
+                    instrument instead of individual channel tracks.
+                    Auto-detects overlapping notes and creates
+                    auxiliary tracks if needed.
+                    Default: disabled
 
 ════════════════════════════════════════════════════════════
-Pour plus d'aide: python3 xm2live.py --help
-Documentation complète: README.md
+OUTPUT
+════════════════════════════════════════════════════════════
+
+The converted project will be created in:
+  [source directory]/Conversions Ableton Live/[name]_Ableton_Project/
+
+Contents:
+  • [name].als         - Ableton Live project
+  • Samples/           - Exported WAV samples (16-bit)
+
+════════════════════════════════════════════════════════════
+For help: xm2live --help
+Full documentation: README.md
         '''
     )
 
-    parser.add_argument('fichier', help='Fichier XM ou MOD à convertir')
-    parser.add_argument('template', nargs='?', help='Template Ableton (optionnel)')
+    parser.add_argument('file', help='XM or MOD file to convert')
+    parser.add_argument('template', nargs='?', help='Ableton template (optional)')
     parser.add_argument('--pan-automation', action='store_true',
-                        help='Activer les automations de panning (effet 8xx). '
-                             'Par défaut désactivé car rare dans les modules.')
+                        help='Enable panning automations (effect 8xx). '
+                             'Disabled by default as rarely used in modules.')
     parser.add_argument('--envelope', action='store_true',
-                        help='Activer la conversion des enveloppes volume FT2 → ADSR Ableton. '
-                             'Par défaut désactivé car approximation simplifiée.')
+                        help='Enable FT2 volume envelope → Ableton ADSR conversion. '
+                             'Disabled by default as it is a simplified approximation.')
     parser.add_argument('--sample-offset', action='store_true',
-                        help='Activer l\'effet 9xx (Sample Offset) avec Simpler. '
-                             'Les instruments avec effet 9xx utiliseront Simpler au lieu de Sampler. '
-                             'LIMITATION: conversion ping-pong → forward.')
+                        help='Enable effect 9xx (Sample Offset) with Simpler. '
+                             'Instruments with effect 9xx will use Simpler instead of Sampler. '
+                             'LIMITATION: ping-pong → forward conversion.')
     parser.add_argument('--merge-tracks', action='store_true',
-                        help='Mode fusion: créer une piste "All notes" par instrument au lieu des pistes individuelles par canal. '
-                             'Détecte automatiquement les chevauchements temporels et crée des pistes auxiliaires si nécessaire.')
+                        help='Merge mode: create one "All notes" track per instrument instead of individual channel tracks. '
+                             'Auto-detects temporal overlaps and creates auxiliary tracks if needed.')
 
     args = parser.parse_args()
 
-    xm_path = args.fichier
-    template_path = args.template  # None si non spécifié, sera auto-créé
+    xm_path = args.file
+    template_path = args.template  # None if not specified, will be auto-created
 
-    # Fix: Si template_path commence par '--', c'est un flag mal parsé, donc None
+    # Fix: If template_path starts with '--', it's a misparsed flag, so set to None
     if template_path and template_path.startswith('--'):
         template_path = None
 
@@ -2517,15 +2517,15 @@ Documentation complète: README.md
         else:
             sys.exit(1)
     except KeyboardInterrupt:
-        print("\n\n⚠️  Conversion interrompue par l'utilisateur")
+        print("\n\n⚠️  Conversion interrupted by user")
         sys.exit(1)
     except Exception as e:
-        print(f"\n\n❌ ERREUR INATTENDUE:")
+        print(f"\n\n❌ UNEXPECTED ERROR:")
         print(f"   {type(e).__name__}: {e}")
-        print(f"\n   Si cette erreur persiste, veuillez vérifier:")
-        print(f"   1. Que le fichier XM n'est pas corrompu")
-        print(f"   2. Que le template est valide")
-        print(f"   3. Que vous avez les droits d'écriture dans le répertoire")
+        print(f"\n   If this error persists, please check:")
+        print(f"   1. That the XM/MOD file is not corrupted")
+        print(f"   2. That the template is valid (if using one)")
+        print(f"   3. That you have write permissions in the directory")
         import traceback
         traceback.print_exc()
         sys.exit(1)
