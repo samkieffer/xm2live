@@ -38,9 +38,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/samkieffer/xm2live"
-Repository = "https://github.com/samkieffer/xm2live"
-Issues = "https://github.com/samkieffer/xm2live/issues"
+Homepage = "https://github.com/KiddingKurrys/xm2live"
+Repository = "https://github.com/KiddingKurrys/xm2live"
+Issues = "https://github.com/KiddingKurrys/xm2live/issues"
 
 [project.scripts]
 xm2live = "xm2live:main"
